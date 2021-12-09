@@ -69,11 +69,11 @@ class Board:
             else:
                 icons.append('o')
         print(f"""
-            {icons[0]}
-           {icons[1]} {icons[2]}
-          {icons[3]} {icons[4]} {icons[5]}
-         {icons[6]} {icons[7]} {icons[8]} {icons[9]}
-        {icons[10]} {icons[11]} {icons[12]} {icons[13]} {icons[14]}
+            {icons[0]}\t\t\t      0
+           {icons[1]} {icons[2]}\t\t\t     1  2
+          {icons[3]} {icons[4]} {icons[5]}\t\t\t   3  4  5
+         {icons[6]} {icons[7]} {icons[8]} {icons[9]}\t\t  6  7  8  9
+        {icons[10]} {icons[11]} {icons[12]} {icons[13]} {icons[14]}\t\t10 11 12 13 14
         """)
 
 class Game:
