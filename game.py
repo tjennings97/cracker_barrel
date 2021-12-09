@@ -63,15 +63,11 @@ class Board:
 
     def print_board(self):
         icons = []
-        '''
-        Figure out why this comparison isn't working
-        '''
         for hole in self.holes:
-            print(hole.get_state())
-            if hole.get_state is False:
-                icons.append('o')
-            else:
+            if hole.get_state() == True:
                 icons.append('*')
+            else:
+                icons.append('o')
         print(f"""
             {icons[0]}
            {icons[1]} {icons[2]}
@@ -79,8 +75,6 @@ class Board:
          {icons[6]} {icons[7]} {icons[8]} {icons[9]}
         {icons[10]} {icons[11]} {icons[12]} {icons[13]} {icons[14]}
         """)
-
-
 
 class Game:
     def __init__(self):
