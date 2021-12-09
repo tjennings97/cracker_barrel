@@ -55,8 +55,11 @@ class Board:
                     if move[1] == land: # if landing hole is valid landing hole given starting hole
                         if self.holes[land].get_state() is False: # if landing hole (move[1]) is empty
                             if self.holes[move[0]].get_state() is True: # if jumping hole (move[0]) is filled
-                                return True
-        return False # not a valid move
+                                return move[0]
+        return -1 # not a valid move
+    
+    def get_peg_count(self):
+        return self.peg_count
 
     def decrease_pegs(self):
         self.peg_count = self.peg_count - 1
@@ -79,6 +82,54 @@ class Board:
 class Game:
     def __init__(self):
         self.board = Board()
+    
+    def print_instructions(self):
+        print("""
+        HOW TO PLAY
+        -----------
+        You will jump one peg over another to an open space, provided that 
+        there is a peg in the hole between the two locations. You may only 
+        jump one peg at a time and jumps may only happen along the same row
+        or the same diagonal. The peg that was jumped will be removed. You 
+        will continue this process until there is only 1 peg left or until 
+        there are no remaining moves.
+
+        This game will display two boards. The board on the left will be
+        your playing board. This board will represent whether holes are
+        filled with a peg, using '*,' or empty, using 'o.' The board on the
+        right is your reference board. This board shows the numbers that
+        represent the holes on the playing board.
+
+        For example, the playing board will start a triangle with a 'o' at the 
+        top. According to the reference board, this space is represented by 0.
+
+        Leave only one - you're genius.
+        Leave two pegs and you're pretty smart.
+        Leave three pegs and you are just plain dumb.
+        Leave four or mor'n you're just plain "EQ-NO-RA-MOOOSE."
+        """)
+    
+    def play_game(self):
+        self.print_instructions()
         self.board.print_board()
+
+        play = True
+        while play is True:
+            starting_hole = int(input("Jumping peg: "))
+            landing_hole = int(input("Landing space: "))
+            jumped_hole = self.board.check_move(starting_hole, landing_hole)
+            if jumped_hole == -1:
+                print("This is an invalid move. Please try again.")
+            else:
+                self.board.holes[starting_hole].change_state()
+                self.board.holes[jumped_hole].change_state()
+                self.board.holes[landing_hole].change_state()
+                self.board.decrease_pegs()
+            play = self.board.are_moves()
+        
+
+
+            
+
     
 g = Game()
