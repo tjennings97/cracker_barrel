@@ -6,10 +6,13 @@ class Hole:
         self.state = state
     def get_state(self):
         return self.state
-    def get_location(self):
-        return self.location
     def change_state(self):
         self.state = not self.state
+    def get_location(self):
+        return self.location
+    def set_location(self, new_location):
+        self.location = new_location
+    
 	
 
 class Board:
@@ -39,17 +42,25 @@ class Board:
     
     def are_moves(self):
         for hole in self.holes: # loop through holes
+            print("location: " + str(hole.get_location()) + " state: " + str(hole.get_state()))
             if hole.get_state() is True: # if hole is filled
                 moves = self.valid_moves[hole.get_location()] # get valid moves for hole
                 for move in moves: # loop through moves for hole
                     if self.holes[move[0]].get_state() is True: # if jumping hole (move[0]) is filled
                         if self.holes[move[1]].get_state() is False: # if landing hole (move[1]) is empty
+                            print("\tcorrect holes filled")
                             return True # valid move
+                        else:
+                            print("\tlanding hole not empty")
+                    else:
+                        print("\tjumped hole not filled")
+            else:
+                print("\tstart hole not filled")
         return False # no valid moves
 
     def check_move(self, start, land):
         if start in self.valid_moves:
-            if self.holes[start].get_state() is True:
+            if self.holes[start].get_state() is True: #if starting hole is filled
                 moves = self.valid_moves[start] # get moves for hole
                 for move in moves:
                     if move[1] == land: # if landing hole is valid landing hole given starting hole
@@ -111,13 +122,15 @@ class Game:
     
     def play_game(self):
         self.print_instructions()
-        self.board.print_board()
 
         play = True
         while play is True:
+            self.board.print_board()
+
             starting_hole = int(input("Jumping peg: "))
             landing_hole = int(input("Landing space: "))
             jumped_hole = self.board.check_move(starting_hole, landing_hole)
+
             if jumped_hole == -1:
                 print("This is an invalid move. Please try again.")
             else:
@@ -127,9 +140,20 @@ class Game:
                 self.board.decrease_pegs()
             play = self.board.are_moves()
         
-
-
-            
+        pegs = self.board.get_peg_count()
+        print("Remaining Pegs: " + str(pegs))
+        if pegs == 1:
+            print("YOU'RE GENIUS")
+        elif pegs == 2:
+            print("YOU'RE PRETTY SMART")
+        elif pegs == 3:
+            print("YOU'RE JUST PLAIN DUMB")
+        elif pegs > 3:
+            print("YOU'RE JUST PLAIN \"EG-NO-RA-MOOSE\"")
+        else:
+            print("Something went wrong.")
+        self.board.print_board()
 
     
 g = Game()
+g.play_game()
