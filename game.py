@@ -17,6 +17,7 @@ class Hole:
 
 class Board:
     def __init__(self):
+        # come up with formula - reference chess implementations?
         self.valid_moves = {
             0:[[1,3],[2,5]],
             1:[[3,6],[4,8]],
@@ -42,20 +43,20 @@ class Board:
     
     def are_moves(self):
         for hole in self.holes: # loop through holes
-            print("location: " + str(hole.get_location()) + " state: " + str(hole.get_state()))
+            #print("location: " + str(hole.get_location()) + " state: " + str(hole.get_state()))
             if hole.get_state() is True: # if hole is filled
                 moves = self.valid_moves[hole.get_location()] # get valid moves for hole
                 for move in moves: # loop through moves for hole
                     if self.holes[move[0]].get_state() is True: # if jumping hole (move[0]) is filled
                         if self.holes[move[1]].get_state() is False: # if landing hole (move[1]) is empty
-                            print("\tcorrect holes filled")
+                            #print("\tcorrect holes filled")
                             return True # valid move
-                        else:
-                            print("\tlanding hole not empty")
-                    else:
-                        print("\tjumped hole not filled")
-            else:
-                print("\tstart hole not filled")
+                        #else:
+                            #print("\tlanding hole not empty")
+                    #else:
+                        #print("\tjumped hole not filled")
+            #else:
+                #print("\tstart hole not filled")
         return False # no valid moves
 
     def check_move(self, start, land):
@@ -98,26 +99,31 @@ class Game:
         print("""
         HOW TO PLAY
         -----------
-        You will jump one peg over another to an open space, provided that 
-        there is a peg in the hole between the two locations. You may only 
-        jump one peg at a time and jumps may only happen along the same row
-        or the same diagonal. The peg that was jumped will be removed. You 
-        will continue this process until there is only 1 peg left or until 
+        You will jump one peg over another to an open
+        space, provided that there is a peg in the hole
+        between the two locations. You may only jump one
+        peg at a time and jumps may only happen along the
+        same row or the same diagonal. The peg that was 
+        jumped will be removed. You will continue this 
+        process until there is only 1 peg left or until 
         there are no remaining moves.
 
-        This game will display two boards. The board on the left will be
-        your playing board. This board will represent whether holes are
-        filled with a peg, using '*,' or empty, using 'o.' The board on the
-        right is your reference board. This board shows the numbers that
-        represent the holes on the playing board.
+        This game will display two boards. The board on
+        the left will be your playing board. This board
+        will represent whether holes are filled with a peg,
+        using '*,' or empty, using 'o.' The board on the
+        right is your reference board. This board shows
+        the numbers that represent the holes on the playing
+        board.
 
-        For example, the playing board will start a triangle with a 'o' at the 
-        top. According to the reference board, this space is represented by 0.
+        For example, the playing board will start a triangle 
+        with a 'o' at the top. According to the reference 
+        board, this space is represented by 0.
 
-        Leave only one - you're genius.
-        Leave two pegs and you're pretty smart.
-        Leave three pegs and you are just plain dumb.
-        Leave four or mor'n you're just plain "EQ-NO-RA-MOOOSE."
+        Leave only 1 - you're genius.
+        Leave 2 pegs and you're pretty smart.
+        Leave 3 pegs and you are just plain dumb.
+        Leave 4 or mor'n you're just plain "EQ-NO-RA-MOOOSE."
         """)
     
     def play_game(self):
