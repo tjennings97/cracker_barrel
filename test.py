@@ -46,6 +46,8 @@ def draw_window():
 
     pygame.display.update()
 
+
+
 def main():
     clock = pygame.time.Clock()
     run = True
