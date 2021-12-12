@@ -16,52 +16,14 @@ pygame.display.set_caption("Peg Game")
 WHITE = (255,255,255)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
-YELLOW = (255, 255, 0)
 BLACK = (0, 0, 0)
 
 FPS = 60 # frames per second we are updating our game at
 
 GAME_BOARD_IMAGE = pygame.image.load(os.path.join('assets', 'wood_triangle.png'))
-picture = pygame.transform.scale(GAME_BOARD_IMAGE, (WIDTH, TRIANGLE_HEIGHT))
-'''
-def draw_board(board):
-    holes = board.holes
-    hole = 0
-    x_middle = (1/2) * WIDTH
-    y_dist = 1
+picture = pygame.transform.scale(GAME_BOARD_IMAGE, (WIDTH, TRIANGLE_HEIGHT)) 
 
-    for row in range(0,5):
-        x_row = row
-        if row % 2 == 0:
-            x_toggle = True
-            x_dist = 0
-        else:
-            x_toggle = False
-            x_dist = 2
-
-        while x_row != -1:
-            if x_toggle is True:
-                x = x_middle + (x_dist * BLOCK_WIDTH)
-                x_dist = x_dist + 4
-            else:
-                x = x_middle - (x_dist * BLOCK_WIDTH)
-                
-            x_toggle = not x_toggle
-            x_row = x_row - 1
-            y = y_dist * BLOCK_HEIGHT
-            coordinates = (x,y)
-            if hole != 0:
-                pygame.draw.circle(WIN, holes[hole].color, coordinates, HOLE_RADIUS)
-                pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS, width=1)
-            else:
-                pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS)
-            holes[hole].coordinates = coordinates
-            hole += 1
-        y_dist = y_dist + 2
-'''  
-
-def draw_board(board):
-    holes = board.holes
+def draw_board(holes):
     hole = 0
     x_start = (1/2) * WIDTH
     y_dist = 1
@@ -77,7 +39,7 @@ def draw_board(board):
             coordinates = (x,y)
             if hole != 0:
                 pygame.draw.circle(WIN, holes[hole].color, coordinates, HOLE_RADIUS)
-                pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS, width=1)
+                pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS, width=2)
             else:
                 pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS)
             holes[hole].coordinates = coordinates
@@ -86,16 +48,13 @@ def draw_board(board):
         x_dist = 0
         y_dist = y_dist + 2
 
-
-
-def draw_pointer(x, y):
+def draw_pointer(x, y, color):
     point1 = (x, y + HOLE_RADIUS + 10)
     point2 = (x -10, y + HOLE_RADIUS + 20)
     point3 = (x +10, y + HOLE_RADIUS + 20)
-    pygame.draw.polygon(WIN, RED, [point1, point2, point3])
+    pygame.draw.polygon(WIN, color, [point1, point2, point3])
     pygame.display.update()
         
-
 def draw_window(board):
     WIN.fill(WHITE)
     WIN.blit(picture, (0,0))
@@ -126,6 +85,8 @@ def main():
     run = True
     pointer_location = 0
     pressed = False
+    color = RED
+    pointer_flag = True
     
     while run:
         clock.tick(FPS) # control speed of while loop. run 60 FPS per second
@@ -141,12 +102,26 @@ def main():
                     pointer_location = move_pointer(pointer_location, "left")
                     pressed = True
                 if event.key == pygame.K_SPACE and not pressed:
+                    if pointer_flag is True:
+                        pointer_flag = False
+                        color = BLUE
+                        starting_hole = pointer_location
+                    else:
+                        pointer_flag = True
+                        color = RED
+                        landing_hole = pointer_location
+                        jumped_hole = g.board.check_move(starting_hole, landing_hole)
+                        if jumped_hole == -1:
+                            print("This is an invalid move. Please try again.")
+                        else:
+                            g.jump(starting_hole, jumped_hole, landing_hole)
+                        run = g.board.are_moves()
                     pressed = True
             if event.type == pygame.KEYUP:
                 pressed = False
 
-        draw_window(g.board)
-        draw_pointer(g.board.holes[pointer_location].coordinates[0], g.board.holes[pointer_location].coordinates[1])
+        draw_window(g.board.holes)
+        draw_pointer(g.board.holes[pointer_location].coordinates[0], g.board.holes[pointer_location].coordinates[1], color)
         
     pygame.quit()
 
