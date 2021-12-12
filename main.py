@@ -140,6 +140,8 @@ def main():
                 if event.key == pygame.K_LEFT and not pressed:
                     pointer_location = move_pointer(pointer_location, "left")
                     pressed = True
+                if event.key == pygame.K_SPACE and not pressed:
+                    pressed = True
             if event.type == pygame.KEYUP:
                 pressed = False
 
