@@ -1,19 +1,22 @@
 #https://thecleverprogrammer.com/2020/10/04/card-game-with-python/
 
 class Hole:
-    def __init__(self, location, state):
+    def __init__(self, location, state, color):
         self.location = location
         self.state = state
+        self.color = color
     def get_state(self):
         return self.state
     def change_state(self):
         self.state = not self.state
+    def get_color(self):
+        return self.color
+    def change_color(self, color):
+        self.color = color
     def get_location(self):
         return self.location
     def set_location(self, new_location):
         self.location = new_location
-    
-	
 
 class Board:
     def __init__(self):
@@ -36,9 +39,10 @@ class Board:
             14: [[9,5],[13,12]]
         }
         self.holes = []
-        self.holes.append(Hole(0, False))
+        self.holes.append(Hole(0, False, (0,0,0)))
+        temp = [(0, 0, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 0, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 0, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 0, 255),(255,255,255)]
         for i in range(1,15):
-            self.holes.append(Hole(i, True))
+            self.holes.append(Hole(i, True, temp[i-1]))
         self.peg_count = 14
     
     def are_moves(self):
@@ -126,6 +130,15 @@ class Game:
         Leave 4 or mor'n you're just plain "EQ-NO-RA-MOOOSE."
         """)
     
+    def jump(self, starting_hole, jumped_hole, landing_hole):
+        self.board.holes[landing_hole].change_state()
+        self.board.holes[landing_hole].change_color(self.board.holes[landing_hole].get_color())
+        self.board.holes[starting_hole].change_state()
+        self.board.holes[starting_hole].change_color((0,0,0))
+        self.board.holes[jumped_hole].change_state()
+        self.board.holes[jumped_hole].change_color((0,0,0))
+        self.board.decrease_pegs()
+    
     def play_game(self):
         self.print_instructions()
 
@@ -140,10 +153,7 @@ class Game:
             if jumped_hole == -1:
                 print("This is an invalid move. Please try again.")
             else:
-                self.board.holes[starting_hole].change_state()
-                self.board.holes[jumped_hole].change_state()
-                self.board.holes[landing_hole].change_state()
-                self.board.decrease_pegs()
+                self.jump(starting_hole, jumped_hole, landing_hole)
             play = self.board.are_moves()
         
         pegs = self.board.get_peg_count()
@@ -160,6 +170,6 @@ class Game:
             print("Something went wrong.")
         self.board.print_board()
 
-    
-g = Game()
-g.play_game()
+if __name__ == "__main__":
+    g = Game()
+    g.play_game()
