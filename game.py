@@ -91,6 +91,8 @@ class Board:
 class Game:
     def __init__(self):
         self.board = Board()
+        self.pointer = 0
+        self.pointer_color = (255, 0, 0)
     
     def print_instructions(self):
         print("""
