@@ -25,7 +25,7 @@ picture = pygame.transform.scale(GAME_BOARD_IMAGE, (WIDTH, TRIANGLE_HEIGHT))
 
 def draw_board(holes):
     hole = 0
-    x_start = (1/2) * WIDTH
+    x_start = WIDTH / 2
     y_dist = 1
     x_dist = 0
 
@@ -37,11 +37,8 @@ def draw_board(holes):
             y = y_dist * BLOCK_HEIGHT
             x_dist = x_dist + 4
             coordinates = (x,y)
-            if hole != 0:
-                pygame.draw.circle(WIN, holes[hole].color, coordinates, HOLE_RADIUS)
-                pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS, width=2)
-            else:
-                pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS)
+            pygame.draw.circle(WIN, holes[hole].color, coordinates, HOLE_RADIUS)
+            pygame.draw.circle(WIN, BLACK, coordinates, HOLE_RADIUS, width=2)
             holes[hole].coordinates = coordinates
             hole += 1
         x_start = x_start - 2 * BLOCK_WIDTH
@@ -75,18 +72,15 @@ def move_pointer(pointer_location, direction):
     return pointer_location
 
 def main():
-    #game = Game.Game()
-    #game.print_instructions()
-    #game.play_game()
 
     g = Game.Game()
 
     clock = pygame.time.Clock()
     run = True
     pointer_location = 0
-    pressed = False
     color = RED
     pointer_flag = True
+    starting_hole = 0
     
     while run:
         clock.tick(FPS) # control speed of while loop. run 60 FPS per second
@@ -95,13 +89,11 @@ def main():
                 run = False
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT and not pressed:
+                if event.key == pygame.K_RIGHT:
                     pointer_location = move_pointer(pointer_location, "right")
-                    pressed = True
-                if event.key == pygame.K_LEFT and not pressed:
+                if event.key == pygame.K_LEFT:
                     pointer_location = move_pointer(pointer_location, "left")
-                    pressed = True
-                if event.key == pygame.K_SPACE and not pressed:
+                if event.key == pygame.K_SPACE:
                     if pointer_flag is True:
                         pointer_flag = False
                         color = BLUE
@@ -116,9 +108,6 @@ def main():
                         else:
                             g.jump(starting_hole, jumped_hole, landing_hole)
                         run = g.board.are_moves()
-                    pressed = True
-            if event.type == pygame.KEYUP:
-                pressed = False
 
         draw_window(g.board.holes)
         draw_pointer(g.board.holes[pointer_location].coordinates[0], g.board.holes[pointer_location].coordinates[1], color)

@@ -40,7 +40,7 @@ class Board:
         }
         self.holes = []
         self.holes.append(Hole(0, False, (0,0,0)))
-        temp = [(0, 0, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 0, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 0, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 0, 255),(255,255,255)]
+        temp = [(0, 255, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 255, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 255, 255),(255,255,255),(255, 0, 0),(255, 255, 0),(0, 255, 255),(255,255,255)]
         for i in range(1,15):
             self.holes.append(Hole(i, True, temp[i-1]))
         self.peg_count = 14
@@ -53,14 +53,7 @@ class Board:
                 for move in moves: # loop through moves for hole
                     if self.holes[move[0]].get_state() is True: # if jumping hole (move[0]) is filled
                         if self.holes[move[1]].get_state() is False: # if landing hole (move[1]) is empty
-                            #print("\tcorrect holes filled")
                             return True # valid move
-                        #else:
-                            #print("\tlanding hole not empty")
-                    #else:
-                        #print("\tjumped hole not filled")
-            #else:
-                #print("\tstart hole not filled")
         return False # no valid moves
 
     def check_move(self, start, land):
@@ -132,12 +125,28 @@ class Game:
     
     def jump(self, starting_hole, jumped_hole, landing_hole):
         self.board.holes[landing_hole].change_state()
-        self.board.holes[landing_hole].change_color(self.board.holes[landing_hole].get_color())
+        self.board.holes[landing_hole].change_color(self.board.holes[starting_hole].color)
         self.board.holes[starting_hole].change_state()
         self.board.holes[starting_hole].change_color((0,0,0))
         self.board.holes[jumped_hole].change_state()
         self.board.holes[jumped_hole].change_color((0,0,0))
         self.board.decrease_pegs()
+
+    def print_result(self):
+        pegs = self.board.get_peg_count()
+        print("Remaining Pegs: " + str(pegs))
+        if pegs == 1:
+            print("YOU'RE GENIUS")
+        elif pegs == 2:
+            print("YOU'RE PRETTY SMART")
+        elif pegs == 3:
+            print("YOU'RE JUST PLAIN DUMB")
+        elif pegs > 3:
+            print("YOU'RE JUST PLAIN \"EG-NO-RA-MOOSE\"")
+        else:
+            print("Something went wrong.")
+        self.board.print_board()
+
     
     def play_game(self):
         self.print_instructions()
@@ -156,18 +165,7 @@ class Game:
                 self.jump(starting_hole, jumped_hole, landing_hole)
             play = self.board.are_moves()
         
-        pegs = self.board.get_peg_count()
-        print("Remaining Pegs: " + str(pegs))
-        if pegs == 1:
-            print("YOU'RE GENIUS")
-        elif pegs == 2:
-            print("YOU'RE PRETTY SMART")
-        elif pegs == 3:
-            print("YOU'RE JUST PLAIN DUMB")
-        elif pegs > 3:
-            print("YOU'RE JUST PLAIN \"EG-NO-RA-MOOSE\"")
-        else:
-            print("Something went wrong.")
+        self.print_result()
         self.board.print_board()
 
 if __name__ == "__main__":
