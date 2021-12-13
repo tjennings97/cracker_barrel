@@ -26,7 +26,7 @@ class Board:
             1:[[3,6],[4,8]],
             2: [[4,7],[5,9]],
             3: [[1,0],[4,5],[6,10],[7,12]],
-            4: [[4,11],[8,13]],
+            4: [[7,11],[8,13]],
             5: [[2,0],[4,3],[8,12],[9,14]],
             6: [[3,1],[7,8]],
             7: [[4,2],[8,9]],
@@ -47,7 +47,6 @@ class Board:
     
     def are_moves(self):
         for hole in self.holes: # loop through holes
-            #print("location: " + str(hole.get_location()) + " state: " + str(hole.get_state()))
             if hole.get_state() is True: # if hole is filled
                 moves = self.valid_moves[hole.get_location()] # get valid moves for hole
                 for move in moves: # loop through moves for hole

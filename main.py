@@ -64,10 +64,10 @@ def print_results(pegs):
         text = "YOU'RE JUST PLAIN \"EG-NO-RA-MOOSE\""
     else:
         text = "Something went wrong."
-    result_txt = HEADER_FONT.render(text, 1, RED)
+    result_txt = PARAGRAPH_FONT.render(text, 1, RED)
     end_txt = PARAGRAPH_FONT.render("PRESS [Q] TO QUIT", 1, RED)
     WIN.blit(result_txt, (WIDTH/2 - result_txt.get_width()/2, HEIGHT/2))
-    WIN.blit(end_txt, (WIDTH/2 - end_txt.get_width()/2, HEIGHT/2 + 50))
+    WIN.blit(end_txt, (WIDTH/2 - end_txt.get_width()/2, HEIGHT/2 + 30))
 
 def draw_board(holes):
     hole = 0
