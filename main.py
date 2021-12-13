@@ -3,7 +3,7 @@ import os
 import math
 import Game
 
-WIDTH, HEIGHT = 600, 600
+WIDTH, HEIGHT = 400, 400
 BLOCK_HEIGHT = (1/10) * (math.sqrt(3)/2) * WIDTH
 BLOCK_WIDTH = (1/22) * WIDTH
 TRIANGLE_HEIGHT = math.sqrt(3)/2 * WIDTH
@@ -47,8 +47,8 @@ def draw_board(holes):
 
 def draw_pointer(x, y, color):
     point1 = (x, y + HOLE_RADIUS + 10)
-    point2 = (x -10, y + HOLE_RADIUS + 20)
-    point3 = (x +10, y + HOLE_RADIUS + 20)
+    point2 = (x - 10, y + HOLE_RADIUS + 20)
+    point3 = (x + 10, y + HOLE_RADIUS + 20)
     pygame.draw.polygon(WIN, color, [point1, point2, point3])
     pygame.display.update()
         
@@ -78,9 +78,9 @@ def main():
     clock = pygame.time.Clock()
     run = True
     pointer_location = 0
+    starting_hole = 0
     color = RED
     pointer_flag = True
-    starting_hole = 0
     
     while run:
         clock.tick(FPS) # control speed of while loop. run 60 FPS per second
@@ -91,8 +91,10 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     pointer_location = move_pointer(pointer_location, "right")
+
                 if event.key == pygame.K_LEFT:
                     pointer_location = move_pointer(pointer_location, "left")
+
                 if event.key == pygame.K_SPACE:
                     if pointer_flag is True:
                         pointer_flag = False
