@@ -1,7 +1,7 @@
 import pygame
 import os
 import math
-import Game
+import cb_classes
 pygame.font.init()
 
 # Window settings
@@ -130,7 +130,7 @@ def move_pointer(pointer_location, direction):
 
 def main():
 
-    g = Game.Game()
+    g = cb_classes.Game()
 
     clock = pygame.time.Clock()
     run = True
