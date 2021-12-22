@@ -10,9 +10,11 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Peg Game")
 FPS = 60 # frames per second we are updating our game at
 
-# the following is based on a 5 row triangle. if for some reason, a bigger 
-# triangle is desired, the structures in Game.py must be updated in addition 
-# to the math done here
+'''
+the following is based on a 5 row triangle. if for some reason, a bigger 
+triangle is desired, the structures in Game.py must be updated in addition 
+to the math done here
+'''
 BLOCK_HEIGHT = (1/10) * (math.sqrt(3)/2) * WIDTH
 BLOCK_WIDTH = (1/22) * WIDTH
 TRIANGLE_HEIGHT = math.sqrt(3)/2 * WIDTH
